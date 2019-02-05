@@ -69,6 +69,14 @@ open class PopupDialogButton: UIButton {
     open var defaultButtonColor    = UIColor.clear
     open var defaultSeparatorColor = UIColor(white: 0.9, alpha: 1)
 
+    open var defaultSeparatorHeight: CGFloat = 1 {
+        didSet {
+            if defaultSeparatorHeight <= 0 {
+                defaultSeparatorHeight = oldValue
+            }
+        }
+    }
+
     /// Whether button should dismiss popup when tapped
     @objc open var dismissOnTap = true
 
@@ -147,13 +155,14 @@ open class PopupDialogButton: UIButton {
         addSubview(separator)
         addSubview(leftSeparator)
 
+        let sh = defaultSeparatorHeight
         let views = ["separator": separator, "leftSeparator": leftSeparator, "button": self]
         let metrics = ["buttonHeight": buttonHeight]
         var constraints = [NSLayoutConstraint]()
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:[button(buttonHeight)]", options: [], metrics: metrics, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[separator]|", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[separator(1)]", options: [], metrics: nil, views: views)
-        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[leftSeparator(1)]", options: [], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[separator(\(sh))]", options: [], metrics: nil, views: views)
+        constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[leftSeparator(\(sh))]", options: [], metrics: nil, views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[leftSeparator]|", options: [], metrics: nil, views: views)
         NSLayoutConstraint.activate(constraints)
     }
