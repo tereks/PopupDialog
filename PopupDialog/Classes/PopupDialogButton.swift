@@ -69,16 +69,12 @@ open class PopupDialogButton: UIButton {
     open var defaultButtonColor    = UIColor.clear
     open var defaultSeparatorColor = UIColor(white: 0.9, alpha: 1)
 
-    open var defaultSeparatorHeight: CGFloat = 1 {
-        didSet {
-            if defaultSeparatorHeight <= 0 {
-                defaultSeparatorHeight = oldValue
-            }
-        }
-    }
 
     /// Whether button should dismiss popup when tapped
     @objc open var dismissOnTap = true
+
+    /// Whether button should dismiss popup when tapped
+    @objc open var separatorHeight: CGFloat = 1
 
     /// The action called when the button is tapped
     open fileprivate(set) var buttonAction: PopupDialogButtonAction?
@@ -117,10 +113,17 @@ open class PopupDialogButton: UIButton {
 
      - returns: PopupDialogButton
      */
-    @objc public init(title: String, height: Int = 45, dismissOnTap: Bool = true, action: PopupDialogButtonAction?) {
+    @objc public init(title: String,
+                      height: Int = 45,
+                      lineHeight: CGFloat = 1,
+                      dismissOnTap: Bool = true,
+                      action: PopupDialogButtonAction?) {
 
         // Assign the button height
         buttonHeight = height
+
+        // Assign the separator height
+        separatorHeight = lineHeight
         
         // Assign the button action
         buttonAction = action
@@ -155,7 +158,7 @@ open class PopupDialogButton: UIButton {
         addSubview(separator)
         addSubview(leftSeparator)
 
-        let sh = defaultSeparatorHeight
+        let sh = separatorHeight
         let views = ["separator": separator, "leftSeparator": leftSeparator, "button": self]
         let metrics = ["buttonHeight": buttonHeight]
         var constraints = [NSLayoutConstraint]()
